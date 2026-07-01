@@ -4,17 +4,13 @@ const mongoose = require('mongoose');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const http = require('http');
 
-// Railway සර්වර් එකේදී Port එක ඉබේම හැදෙන නිසා මෙහෙම දාන එක ආරක්ෂිතයි
 const port = process.env.PORT || 7860;
 http.createServer((req, res) => {
     res.write("Nadee AI Bot is Alive and Running!");
     res.end();
 }).listen(port);
 
-// ඔයාගේ API Key එක 
 const genAI = new GoogleGenerativeAI('AQ.Ab8RN6LIQZdfMM4_1Vjiz1ao_OAJm3eVOxJXcWgJDcwRfYqrEQ');
-
-// ඔයාගේ MongoDB ලින්ක් එක (පාස්වර්ඩ් එකත් එක්කම)
 const MONGODB_URI = 'mongodb+srv://nadee:nadee123@cluster0.zhdroix.mongodb.net/whatsapp-bot?retryWrites=true&w=majority&appName=Cluster0';
 
 const ASSISTANT_PERSONA = `You are Nadeesha Malith's personal WhatsApp assistant. Speak naturally like a polite 21-year-old Sri Lankan.
@@ -35,7 +31,9 @@ mongoose.connect(MONGODB_URI).then(() => {
     
     const client = new Client({
         authStrategy: new RemoteAuth({
+            clientId: 'nadeebot_session', // අලුතෙන් දැම්මේ Railway බග් එක හදන්න
             store: store,
+            dataPath: './sessions',       // අලුතෙන් දැම්මේ
             backupSyncIntervalMs: 300000
         }),
         puppeteer: {
