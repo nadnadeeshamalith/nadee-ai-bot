@@ -99,8 +99,8 @@ mongoose.connect(MONGODB_URI).then(() => {
             
             await msg.reply(response);
             
-        } catch (error) {
-            // බග් එකක් ආවත් සද්ද නැතුව අල්ලගෙන බෝට්ව දිගටම රන් කරනවා
+   } catch (error) {
+            console.error('මැසේජ් එක යවද්දි අවුලක් ආවා:', error);
         }
     });
 
