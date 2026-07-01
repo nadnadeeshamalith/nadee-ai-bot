@@ -1,18 +1,20 @@
 const { Client, RemoteAuth } = require('whatsapp-web.js');
 const { MongoStore } = require('wwebjs-mongo');
 const mongoose = require('mongoose');
-const qrcode = require('qrcode-terminal');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const http = require('http');
 
+// Railway සර්වර් එකේදී Port එක ඉබේම හැදෙන නිසා මෙහෙම දාන එක ආරක්ෂිතයි
+const port = process.env.PORT || 7860;
 http.createServer((req, res) => {
     res.write("Nadee AI Bot is Alive and Running!");
     res.end();
-}).listen(7860);
+}).listen(port);
 
+// ඔයාගේ API Key එක 
 const genAI = new GoogleGenerativeAI('AQ.Ab8RN6LIQZdfMM4_1Vjiz1ao_OAJm3eVOxJXcWgJDcwRfYqrEQ');
 
-// 🔴 ඔයාගේ පාස්වර්ඩ් එක මෙතන <db_password> කියන එක මකලා ඒ වෙනුවට හරියටම ටයිප් කරන්න 🔴
+// ඔයාගේ MongoDB ලින්ක් එක (පාස්වර්ඩ් එකත් එක්කම)
 const MONGODB_URI = 'mongodb+srv://nadee:nadee123@cluster0.zhdroix.mongodb.net/whatsapp-bot?retryWrites=true&w=majority&appName=Cluster0';
 
 const ASSISTANT_PERSONA = `You are Nadeesha Malith's personal WhatsApp assistant. Speak naturally like a polite 21-year-old Sri Lankan.
@@ -53,7 +55,7 @@ mongoose.connect(MONGODB_URI).then(() => {
 
     client.on('qr', (qr) => {
         console.log('\n=========================================');
-        console.log('🔴 මෙන්න අන්තිම QR Code එක! පහළ තියෙන ලින්ක් එක ඔබන්න:');
+        console.log('🔴 මෙන්න අලුත්ම QR Code එක! පහළ තියෙන ලින්ක් එක ඔබන්න:');
         console.log('https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=' + encodeURIComponent(qr));
         console.log('=========================================\n');
     });
@@ -100,7 +102,7 @@ mongoose.connect(MONGODB_URI).then(() => {
             await msg.reply(response);
             
         } catch (error) {
-            console.error('Error:', error);
+            // බග් එකක් ආවත් සද්ද නැතුව අල්ලගෙන බෝට්ව දිගටම රන් කරනවා
         }
     });
 
